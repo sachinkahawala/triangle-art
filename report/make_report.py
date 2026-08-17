@@ -163,12 +163,12 @@ def make_fitness_curve(rows: list[dict], out: Path) -> None:
         ax.plot(hx, hy, color=SERIES_HOLD, lw=2, zorder=3, marker="o", ms=4,
                 label="held-out images (never shown to the model)")
 
+    # Compact staggered labels: rationale text lives in rationales.md, not here.
     span = (max(best) - min(best)) or 1.0
-    for b in find_breakthroughs(rows):
-        idea = textwrap.shorten(b["idea"] or "", 46, placeholder="…")
-        ax.annotate(f"gen {b['gen']}: -{b['delta']:.4f}\n{idea}",
+    for k, b in enumerate(find_breakthroughs(rows)):
+        ax.annotate(f"gen {b['gen']}  −{b['delta']:.3f}",
                     xy=(b["gen"], b["score"]),
-                    xytext=(b["gen"], b["score"] - span * 0.12),
+                    xytext=(b["gen"], b["score"] - span * (0.10 + 0.10 * (k % 3))),
                     fontsize=7.5, color=INK_2, ha="center", va="top",
                     arrowprops=dict(arrowstyle="-", color=BASELINE_C, lw=0.8))
 

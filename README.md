@@ -12,6 +12,24 @@ visibly "coming into focus" as the heuristic improves.
 
 Everything runs on-device. No cloud inference anywhere.
 
+![Generation 0 vs generation 39 vs target](docs/triptych.png)
+
+*The same frozen harness, two versions of one evolved function. Left: the
+gen-0 random-search baseline (hummingbird RMSE 0.162). Middle: the champion
+found at generation 39 (RMSE 0.114). Right: the target.*
+
+![Champion progression across the triangle budget](docs/progression.png)
+
+*The champion heuristic's canvas at 10, 20, 40, and 80 triangles — big tonal
+blocks first, detail later. Size annealing was the model's own discovery.*
+
+![Fitness curve across 40 generations](docs/fitness.png)
+
+*Mean RMSE across 3 training images (blue, lower is better), every scored
+candidate (grey), and 2 held-out images the model never saw (orange). The
+run: 0.240 → 0.139, beating a hand-written reference heuristic (0.162) that
+was used only to validate headroom.*
+
 ## Quickstart
 
 ```bash
