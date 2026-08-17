@@ -1,0 +1,37 @@
+model:
+  # Resolved in order: first entry available on the Ollama server wins.
+  name: qwen3.8:27b
+  fallbacks:
+    - qwen3.6:27b-coding-nvfp4
+    - qwen3.6:27b
+  endpoint: http://localhost:11434/v1
+  max_tokens: 2200
+  temperatures: [0.6, 0.7, 0.85, 1.0]   # one candidate per temperature
+  thinking: false                        # true → allow <think>; false → /no_think
+  vision_feedback: stagnation            # off | stagnation | always
+
+task:
+  work: 220           # working resolution (square)
+  n_tri: 80           # hard triangle budget
+  k_evals: 45         # max evaluate() calls per triangle slot
+  alpha: 0.65         # paint opacity (fixed)
+  seed: 0             # per-run RNG seed (same for every image)
+
+evolve:
+  generations: 40
+  candidates_per_gen: 4
+  population: 6                # top-k archive shown to / selected from
+  run_timeout_s: 120           # wall-clock cap per full 80-triangle run (per image)
+  screen_n_tri: 20             # quick-screen triangle count (hero image only)
+  screen_timeout_s: 30
+  stagnation_escalate: 3       # gens without improvement before bold/restart mode
+  seed: 0
+
+paths:
+  assets: assets
+  runs: runs
+
+# --smoke overrides (fast end-to-end pipeline test)
+smoke:
+  task: {work: 128, n_tri: 24, k_evals: 20}
+  evolve: {generations: 5, candidates_per_gen: 2, run_timeout_s: 40, screen_n_tri: 8, screen_timeout_s: 15}
